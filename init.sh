@@ -49,3 +49,6 @@ install_virtualbox
 log "installing vscode"
 install_vscode
 install_vscode_plugins
+
+log "creating work directory"
+mkdir -p $HOME/working

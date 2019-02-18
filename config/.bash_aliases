@@ -1,7 +1,19 @@
 #!/bin/bash
 
-alias secret_upload="aws s3 cp $HOME/Documents/sensitives.kdbx s3://wes.backup.repo/sensitives.kdbx"
-alias secret_download="aws s3 cp s3://wes.backup.repo/sensitives.kdbx $HOME/Documents/sensitives.kdbx"
-alias prettyjson='python -m json.tool'
 set -o vi
-source $HOME/miscellaneous/bin/setup-utilities.sh
+alias prettyjson='python -m json.tool'
+alias gnome-open='xdg-open'
+
+export S3_BACKUP=s3://wes.backup.repo
+export S3_MUSIC=s3://wes.music.repo
+export NODE_PATH="$NODE_PATH:$HOME/npm/lib/node_modules"
+
+alias secret_upload="aws s3 cp $HOME/sensitives.kdbx $S3_BACKUP/sensitives.kdbx"
+alias secret_download="aws s3 cp $S3_BACKUP/sensitives.kdbx $HOME/sensitives.kdbx"
+
+if [ -e $HOME/miscellaneous/bin/setup-utilities.sh ]; then
+    source $HOME/miscellaneous/bin/setup-utilities.sh
+    echo "setup-utilities loaded."
+fi
+
+PATH="$HOME/bin:$HOME/npm/bin:$PATH"

@@ -4,7 +4,7 @@ function install_docker {
     apt-get remove docker docker-engine docker.io
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor > docker.gpg
     mv docker.gpg /etc/apt/trusted.gpg.d/docker.gpg
-    sh -c 'echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" > /etc/apt/sources.list.d/vscode.list'
+    sh -c 'echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" > /etc/apt/sources.list.d/docker.list'
     apt-get update
     apt-get install -y docker-ce
 }
@@ -45,6 +45,14 @@ function install_vscode {
     apt-get install -y code
 }
 export -f install_vscode
+
+function install_signal {
+    curl -s https://updates.signal.org/desktop/apt/keys.asc | apt-key add -
+    echo "deb [arch=amd64] https://updates.signal.org/desktop/apt xenial main" | tee -a /etc/apt/sources.list.d/signal-xenial.list
+    apt update
+    apt install -y signal-desktop
+}
+export -f install_signal
 
 function install_vscode_plugins {
     EXTENSIONS=(
