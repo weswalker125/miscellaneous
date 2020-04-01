@@ -2,7 +2,13 @@
 
 set -o vi
 alias prettyjson='python -m json.tool'
-alias gnome-open='xdg-open'
+alias myip='ifconfig | grep inet'
+alias restart='service restart'
+alias hl='highlight -O ansi'
+
+open () {
+    xdg-open "$@" &>/dev/null
+}
 
 export S3_BACKUP=s3://wes.backup.repo
 export S3_MUSIC=s3://wes.music.repo
