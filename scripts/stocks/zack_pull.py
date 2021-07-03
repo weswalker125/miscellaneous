@@ -9,12 +9,11 @@ import subprocess
 
 # Primary working location 
 rootDir = "/tmp/zack"
+templateExcelFile = rootDir + "/" + "template.xlsm"
 today = datetime.date.today()
 workingDir = rootDir + "/" + today.strftime("%Y-%m-%d")
 urlFormat = "https://www.zacks.com/{service_name}/download_trades.php"
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 6.0; WOW64; rv:24.0) Gecko/20100101 Firefox/24.0"
-}
+headers = { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; rv:89.0) Gecko/20100101 Firefox/89.0" }
 downloadedFiles = []
 
 # Names of services available to Zack's subscribers
@@ -39,8 +38,11 @@ services = [
 os.makedirs(workingDir, exist_ok=True)
 
 # Copy template
+if not os.path.isfile(templateExcelFile):
+    print("No template found at default location [{}]".format(templateExcelFile))
+    templateExcelFile = input("Template file location: ")
 mainExcelFile = workingDir + "/" + "main.xlsx"
-copyfile(rootDir + "/" + "template.xlsm", mainExcelFile)
+copyfile(templateExcelFile, mainExcelFile)
 
 # Download the trades
 for service in services:
