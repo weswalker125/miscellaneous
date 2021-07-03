@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas
 from shutil import copyfile
 import datetime
@@ -41,8 +42,14 @@ os.makedirs(workingDir, exist_ok=True)
 if not os.path.isfile(templateExcelFile):
     print("No template found at default location [{}]".format(templateExcelFile))
     templateExcelFile = input("Template file location: ")
-mainExcelFile = workingDir + "/" + "main.xlsx"
-copyfile(templateExcelFile, mainExcelFile)
+try:
+    mainExcelFile = workingDir + "/" + "main.xlsx"
+    copyfile(templateExcelFile, mainExcelFile)
+except Exception as err:
+    print("Unable to open template file: " + templateExcelFile)
+    print(err)
+    sys.exit(1)
+
 
 # Download the trades
 for service in services:
@@ -81,8 +88,14 @@ for f in downloadedFiles:
         print("Failed to read file: " + f["file"])
         print(err)
 
-mainWorkbook.save(mainExcelFile)
-print("Today's workbook is at " + mainExcelFile)
+try:
+    mainWorkbook.save(mainExcelFile)
+    print("Today's workbook is at " + mainExcelFile)
 
-print("Attempting to open workbook...")
-subprocess.run(["open", mainExcelFile])
+    print("Attempting to open workbook...")
+    subprocess.run(["open", mainExcelFile])
+    sys.exit(0)
+except Exception as err:
+    print("Unable to save workbook")
+    print(err)
+    sys.exit(2)
