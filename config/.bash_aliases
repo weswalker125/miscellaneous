@@ -22,4 +22,29 @@ if [ -e $HOME/miscellaneous/bin/setup-utilities.sh ]; then
     echo "setup-utilities loaded."
 fi
 
+music_dir() {
+    # get first character of input
+    first_char=${1:0:1}
+
+    # determine this subdirectory this artist's name falls under
+    s3_dir="s3://wes.music.repo"
+    case $first_char in
+        [a-cA-C0-9]*)
+            s3_dir="$s3_dir/A-C"
+            ;;
+        [d-lD-L]*)
+            s3_dir="$s3_dir/D-L"
+            ;;
+        [m-zM-Z]*)
+            s3_dir="$s3_dir/M-Z"
+            ;;
+    esac
+
+    # tack on the entire artist's name
+    s3_dir="$s3_dir/${@}/"
+
+    echo "$s3_dir"
+    aws s3 ls "$s3_dir"
+}
+
 PATH="$HOME/bin:$HOME/npm/bin:$PATH"
